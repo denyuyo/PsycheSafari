@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		
 		// セッションが存在し、かつ "account" という属性がセッションに存在する場合（ユーザーログ済み）、診断画面へリダイレクト
-		if (session != null && session.getAttribute("account") != null) {
+		if (session != null && session.getAttribute("user") != null) {
 			response.sendRedirect(resultPage);
 			return;
 		}
@@ -94,7 +94,7 @@ request.setCharacterEncoding("UTF-8");
 			// セッションを取得または新しいセッションを作成して、ログインできるようにする
 			HttpSession session = request.getSession(true);
 			
-			session.setAttribute("account", user);
+			session.setAttribute("user", user);
 				
 		} catch (Exception e) {
 			e.printStackTrace();

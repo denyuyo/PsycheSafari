@@ -9,6 +9,6 @@
 </head>
 <body>
     <h2>診断結果</h2>
-    <p>あなたの性格タイプは: <%= request.getAttribute("personalityType") %> です。</p>
+    <p>あなたの性格タイプは <%= session.getAttribute("personalityType") %> です。</p>
 </body>
 </html>

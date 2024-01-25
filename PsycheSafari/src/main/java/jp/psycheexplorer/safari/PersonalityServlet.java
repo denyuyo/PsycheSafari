@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import jp.psycheexplorer.safari.bean.QuestionBean;
 import jp.psycheexplorer.safari.bean.UserBean;
+import jp.psycheexplorer.safari.dao.PersonalityResultDao;
 import jp.psycheexplorer.safari.dao.QuestionDao;
 import jp.psycheexplorer.safari.dao.ResponseDao;
 import jp.psycheexplorer.safari.util.PropertyLoader;
@@ -28,9 +29,14 @@ public class PersonalityServlet extends HttpServlet {
 		String resultPage = PropertyLoader.getProperty("url.jsp.personality");
 		
 		HttpSession session = request.getSession(false);
-        UserBean user = (UserBean) session.getAttribute("user"); // セッションからUserBeanを取得
-        int userId = user.getUserId(); // UserBeanからuser_idを取得
-        
+		
+		if (session == null || session.getAttribute("user") == null) {
+			// セッションが存在しない、またはセッション内に user 属性が設定されていない場合は、ログインページへリダイレクト
+			resultPage = PropertyLoader.getProperty("url.safari.login");
+			response.sendRedirect(resultPage);
+			return;
+		}
+		
 		try {
 			QuestionDao questionDao = new QuestionDao();
 			List<QuestionBean> questions = questionDao.getAllQuestions();
@@ -40,6 +46,7 @@ public class PersonalityServlet extends HttpServlet {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
+		
 		// ログイン済みを確認されたので、診断画面に転送
 		RequestDispatcher dispatcher = request.getRequestDispatcher(resultPage);
 		dispatcher.forward(request, response);
@@ -56,49 +63,42 @@ public class PersonalityServlet extends HttpServlet {
 		
 		// セッションを取得して、存在しない場合は null を返す
 		HttpSession session = request.getSession(false);
+		if (session == null || session.getAttribute("user") == null) {
+			// セッションが無効なら、ログインページへリダイレクトする
+			resultPage = PropertyLoader.getProperty("url.safari.login");
+			response.sendRedirect(resultPage);
+			return;
+		}
 		
 		// 診断項目一覧を初期化
-		QuestionBean questionBean =  null;
+		List<QuestionBean> questions = null;
 		
-		// クリアボタン押下時、特定のフィールドをリセット
-		if (request.getParameter("clear") != null) {
-			// クリア時のデフォルト値
-			questionBean = new QuestionBean();
-		
+		if (request.getParameter("Submit") != null) {
+			UserBean user = (UserBean) session.getAttribute("user");
+			int userId = user.getUserId();
+			
 			try {
 				QuestionDao questionDao = new QuestionDao();
-				List<QuestionBean> questions = questionDao.getAllQuestions();
+				questions = questionDao.getAllQuestions();
 				
-				request.setAttribute("questions", questions);
-			} catch (NamingException | SQLException e) {
+				ResponseDao responseDao = new ResponseDao();
+				responseDao.saveUserResponses(request, userId, questions);
+				
+				// 性格タイプを決定する処理を追加
+				PersonalityResultDao personalityResultDao = new PersonalityResultDao();
+				String personalityType = personalityResultDao.determinePersonalityType(userId);
+				personalityResultDao.savePersonalityResult(userId, personalityType);
+				
+				// 性格タイプをセッションに保存
+				session.setAttribute("personalityType", personalityType);
+			} catch (SQLException | NamingException e) {
 				e.printStackTrace();
+				// 内部エラーをクライアントに通知
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				return;
 			}
-		// ユーザーがフォームに入力したデータをセッション内に保存
-		session.setAttribute("QuestionBean", questionBean);
-		// 問題ない場合、診断項目一覧を表示
-		RequestDispatcher dispatcher = request.getRequestDispatcher(resultPage);
-		dispatcher.forward(request, response);
-		return;
-		// 診断結果を見るボタン押下時、診断情報を保持して結果画面に転送
-		}else if(request.getParameter("Submit") != null) {
-	        
-	        UserBean user = (UserBean) session.getAttribute("user");
-	        int userId = user.getUserId();
-	        
-	        // ResponseDao オブジェクトを作成
-	        ResponseDao responseDao = new ResponseDao();
-
-	        try {
-	            // ユーザーの回答をデータベースに保存
-	            responseDao.saveUserResponses(request, userId);
-
-	        } catch (SQLException | NamingException ex) {
-	            ex.printStackTrace();
-	            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-	        }
-	        // 結果表示ページにフォワード
-	        resultPage = PropertyLoader.getProperty("url.safari.result");
+			resultPage = PropertyLoader.getProperty("url.safari.result");
 			response.sendRedirect(resultPage);
-	    }
+		}
 	}
 }

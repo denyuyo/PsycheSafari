@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import jp.psycheexplorer.safari.bean.QuestionBean;
 import jp.psycheexplorer.safari.bean.UserBean;
+import jp.psycheexplorer.safari.dao.PersonalityResultDao;
 import jp.psycheexplorer.safari.dao.QuestionDao;
 import jp.psycheexplorer.safari.dao.ResponseDao;
 import jp.psycheexplorer.safari.util.PropertyLoader;
@@ -46,32 +47,44 @@ public class ResultServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		 HttpSession session = request.getSession(false); // false を指定して、既存のセッションがある場合にのみ取得
-		    if (session == null || session.getAttribute("user") == null) {
-		        // セッションが存在しない、またはセッション内に user 属性が設定されていない場合は、ログインページへリダイレクトする
-		        response.sendRedirect(request.getContextPath() + "/login.jsp");
-		        return;
-		    }
+		String resultPage = PropertyLoader.getProperty("url.safari.result");
+		
+		HttpSession session = request.getSession(false);
+		
+		if (session == null || session.getAttribute("user") == null) {
+			// セッションが無効なら、ログインページへリダイレクトする
+			resultPage = PropertyLoader.getProperty("url.safari.login");
+			response.sendRedirect(resultPage);
+			return;
+		}
+		
+		// セッションから UserBean を取得し、userId を取得
+		UserBean user = (UserBean) session.getAttribute("user");
+		int userId = user.getUserId();
+		
+		try {
+			// 質問リストを取得
+			QuestionDao questionDao = new QuestionDao();
+			List<QuestionBean> questions = questionDao.getAllQuestions();
+			
+			// ユーザーの回答をデータベースに保存
+			ResponseDao responseDao = new ResponseDao();
+			responseDao.saveUserResponses(request, userId, questions);
+			
+			// ユーザーの性格タイプを決定し、結果ページにリダイレクト
+	        PersonalityResultDao personalityResultDao = new PersonalityResultDao();
+	        String personalityType = personalityResultDao.determinePersonalityType(userId);
 
-		    // セッションから UserBean を取得し、userId を取得
-		    UserBean user = (UserBean) session.getAttribute("user");
-		    int userId = user.getUserId();
+	        // 性格タイプの保存
+	        personalityResultDao.savePersonalityResult(userId, personalityType);
 
-		    try {
-		        // 質問リストを取得
-		        QuestionDao questionDao = new QuestionDao();
-		        List<QuestionBean> questions = questionDao.getAllQuestions();
-
-		        // ユーザーの回答をデータベースに保存
-		        ResponseDao responseDao = new ResponseDao();
-		        responseDao.saveUserResponses(request, userId, questions);
-
-		        // 続けて、ユーザーの性格タイプを決定し、結果ページにリダイレクトする処理をここに追加
-	    } catch (SQLException | NamingException e) {
-	        e.printStackTrace();
-	        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-	        return;
-	    }
+	        // 性格タイプをセッションに保存
+	        session.setAttribute("personalityType", personalityType);
+		} catch (SQLException | NamingException e) {
+			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
+		}
+		response.sendRedirect(resultPage);
 	}
-
 }

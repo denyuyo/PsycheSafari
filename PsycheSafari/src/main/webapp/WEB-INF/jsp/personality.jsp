@@ -42,7 +42,6 @@
             <label for="optionB_<%= question.getQuestionId() %>"><%= question.getOptionB() %></label><br>
         <% } %>
         <input type="submit" name="Result" value="診断結果を見る">
-        <input class="button" type="submit" name="clear" value="クリア">
     </form>
 </body
 </html>
