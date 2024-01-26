@@ -14,7 +14,9 @@
 			<h2>診断結果</h2>
 			<form action="/PsycheSafari/ResultServlet" method="post">
 				<p>あなたの性格タイプは <%= session.getAttribute("personalityType") %> です。</p>
-				<input class="button" type="submit" name="Back" value="診断画面に戻る">
+				<div class="btn-radius-gradient-wrap">
+					<input class="btn btn-radius-gradient" type="submit" name="Back" value="診断画面に戻る"></input>
+				</div>
 			</form>
 		</div>
 	</div>

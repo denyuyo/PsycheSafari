@@ -1,5 +1,8 @@
 @charset "UTF-8";
 
+@import "https://use.fontawesome.com/releases/v5.13.0/css/all.css";
+
+
 body {
 	font-family: 'Arial', sans-serif;
 	background-color: #f8f0fb; /* パステルピンクの背景色 */

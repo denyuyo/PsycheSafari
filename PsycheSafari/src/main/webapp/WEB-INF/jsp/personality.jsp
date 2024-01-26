@@ -38,7 +38,7 @@
 			<input type="radio" name="answer<%= question.getQuestionId() %>" id="optionB_<%= question.getQuestionId() %>" value="B">
 			<label for="optionB_<%= question.getQuestionId() %>"><%= question.getOptionB() %></label><br>
 		<% } %>
-		<input class="button" type="submit" name="Result" value="診断結果を見る">
+		<input class="btn btn-malformation btn-malformation--pastel" type="submit" name="Result" value="診断結果を見る">
 	</form>
 	<script src="design/personality.js"></script>
 </body
