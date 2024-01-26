@@ -5,10 +5,19 @@
 <head>
 <meta charset="UTF-8">
 <head>
-    <title>診断結果</title>
+	<title>診断結果</title>
+	<link rel="stylesheet" href="design/result.css" type="text/css">
 </head>
 <body>
-    <h2>診断結果</h2>
-    <p>あなたの性格タイプは <%= session.getAttribute("personalityType") %> です。</p>
+	<div class="container">
+		<div class="form-box">
+			<h2>診断結果</h2>
+			<form action="/PsycheSafari/ResultServlet" method="post">
+				<p>あなたの性格タイプは <%= session.getAttribute("personalityType") %> です。</p>
+				<input class="button" type="submit" name="Back" value="診断画面に戻る">
+			</form>
+		</div>
+	</div>
+	<script src="design/result.js"></script>
 </body>
 </html>

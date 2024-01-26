@@ -51,16 +51,16 @@ public class ResultServlet extends HttpServlet {
 		
 		HttpSession session = request.getSession(false);
 		
-		if (session == null || session.getAttribute("user") == null) {
-			// セッションが無効なら、ログインページへリダイレクトする
-			resultPage = PropertyLoader.getProperty("url.safari.login");
-			response.sendRedirect(resultPage);
-			return;
-		}
-		
 		// セッションから UserBean を取得し、userId を取得
 		UserBean user = (UserBean) session.getAttribute("user");
 		int userId = user.getUserId();
+		
+		// 診断画面に戻るボタンが押された場合
+	    if (request.getParameter("Back") != null) {
+	        resultPage = PropertyLoader.getProperty("url.safari.personality");
+	        response.sendRedirect(resultPage);
+	        return; // リダイレクト後は以降の処理を実行しない
+	    }
 		
 		try {
 			// 質問リストを取得

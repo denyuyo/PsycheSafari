@@ -1,61 +1,73 @@
 @charset "UTF-8";
 
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500&display=swap');
+
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f8f0fb; /* パステルピンクの背景色 */
-    color: #333;
-    margin: 0;
-    padding: 20px;
-    text-align: center;
+	font-family: 'Zen Kaku Gothic New', sans-serif;
+	background-color: #f8f0fb; /* パステルピンクの背景色 */
+	color: #333;
+	margin: 0;
+	padding: 20px;
+	text-align: center;
 }
 
 h2 {
-    color: #ff6699; /* ピンクのテキストカラー */
-    margin-bottom: 30px;
+	color: #ff6699; /* ピンクのテキストカラー */
+	margin-bottom: 30px;
 }
 
 .error {
-    color: red;
-    margin-bottom: 20px;
+	color: red;
+	margin-bottom: 20px;
 }
 
 form {
-    background-color: white;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.2);
-    display: inline-block;
-    text-align: left;
+	background-color: white;
+	padding: 40px;
+	border-radius: 15px;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+	display: inline-block;
+	text-align: left;
 }
 
 p {
     font-size: 16px;
     color: #666;
     margin-bottom: 10px;
+    border: 2px solid #ff6699; /* テキストの周りにボーダーを追加 */
+    border-radius: 50px; /* ボーダーを丸くする */
+    padding: 10px 20px; /* テキストの内側の余白を追加 */
 }
 
 input[type="radio"] {
-    margin-right: 10px;
+	margin-right: 10px;
 }
 
 label {
-    margin-right: 20px;
-    font-size: 14px;
+	margin-right: 20px;
+	font-size: 14px;
 }
 
-input[type="submit"] {
-    margin-top: 30px;
-    padding: 10px 20px;
-    background-color: #ffb6c1; /* ライトピンクの背景色 */
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+.button {
+	margin-top: 30px;
+	padding: 10px 20px;
+	background-color: #ffb6c1; /* ライトピンクの背景色 */
+	color: white;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	font-size: 16px;
+	font-family: 'Zen Kaku Gothic New', sans-serif;
+	font-weight: bold;
+	transition: background-color 0.3s ease;
 }
 
-input[type="submit"]:hover {
-    background-color: #ff8ca0; /* 濃いピンクに変更 */
+.button:hover {
+	background-color: #ff8ca0; /* 濃いピンク */
+}
+
+.error-messages {
+	color: red;
+	font-size: 14px;
+	text-align: center;
 }

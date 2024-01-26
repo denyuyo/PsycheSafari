@@ -6,7 +6,7 @@
 <%
 	// キャッシュの無効化
 	response.setHeader("pragma", "no-cache");
-	response.setHeader("Cache-Control", "no-cache");
+	response.setHeader("Cache-Control", "n	o-cache");
 	response.setDateHeader("Expires", 0);
 	
 	// 診断項目一覧をすべて取得
@@ -22,8 +22,9 @@
 <body>
 	<h2>性格診断</h2>
 	<form action="/PsycheSafari/ResultServlet" method="post" id="form" onsubmit="return checkAllQuestions();">
-		<% if (request.getAttribute("errorMessages") != null) { %>
-				<p class="error" style="color: red;"><%= request.getAttribute("errorMessages") %></p>
+		<% String errorMessages = (String) request.getAttribute("errorMessages");
+			if (errorMessages != null) { %>
+				 <div class="error-messages" id="errorMessages"><%=errorMessages%></div>
 		<% } %>
 		
 		<%-- 質問リスト（questions）をループして、各質問に対するラジオボタンを生成 --%>
@@ -37,7 +38,7 @@
 			<input type="radio" name="answer<%= question.getQuestionId() %>" id="optionB_<%= question.getQuestionId() %>" value="B">
 			<label for="optionB_<%= question.getQuestionId() %>"><%= question.getOptionB() %></label><br>
 		<% } %>
-		<input type="submit" name="Result" value="診断結果を見る">
+		<input class="button" type="submit" name="Result" value="診断結果を見る">
 	</form>
 	<script src="design/personality.js"></script>
 </body

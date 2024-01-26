@@ -30,17 +30,15 @@ public class CommonFunction {
 	
 	// 全ての質問に回答があるかどうかをチェックするメソッド
 	public static String checkRadioButtonSelection(HttpServletRequest request, List<QuestionBean> questions) {
-		StringBuilder errorMessages = new StringBuilder();
-		boolean isErrorPresent = false;
+		StringBuilder errorMessages = new StringBuilder(); // エラーメッセージを格納するStringBuilderオブジェクト
 		
-		for (QuestionBean question : questions) {
+		for (QuestionBean question : questions) { // 質問リストをループ
+			// リクエストから特定の質問に対する選択されたオプションを取得
 			String selectedOption = request.getParameter("answer" + question.getQuestionId());
+			// 選択されたオプションがnull、または"A"または"B"でない場合
 			if (selectedOption == null || (!selectedOption.equals("A") && !selectedOption.equals("B"))) {
-				if (isErrorPresent) {
-					errorMessages.append("<br>");
-				}
+				// 質問のテキストを含むエラーメッセージを追加
 				errorMessages.append("質問 '").append(question.getQuestionText()).append("' に回答してください。");
-				isErrorPresent = true;
 			}
 		}
 		return errorMessages.toString();

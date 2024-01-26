@@ -1,0 +1,61 @@
+@charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500&display=swap');
+
+body {
+	font-family: 'Zen Kaku Gothic New', sans-serif;
+	background-color: #f8f0fb;
+	color: #333;
+	margin: 0;
+	padding: 20px;
+	text-align: center;
+}
+
+h2 {
+	color: #008080;
+	margin-bottom: 30px;
+}
+
+form {
+	background-color: white;
+	padding: 40px;
+	border-radius: 15px;
+	box-shadow: 0 0 20px rgba(192, 192, 192, 0.8), inset 0 0 20px linear-gradient(to right, violet, indigo, blue, green, yellow, orange, red); /* レインボーのグラデーションを適用 */
+	display: inline-block;
+	text-align: left;
+	border: 2px solid #ffac33; /* 枠線の色 */
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 軽い影を追加 */
+}
+
+p {
+	font-size: 16px;
+	color: #666;
+	margin-bottom: 10px;
+}
+
+.highlight {
+	color: #9370db;
+	font-size: 18px;
+	font-weight: bold;
+	background-color: transparent; /* 背景色を透明に設定 */
+    padding: 3px 5px; /* テキスト周りの余白を設定 */
+}
+
+.button {
+	width: 100%;
+	padding: 12px;
+	background-color: #008080;
+	color: white;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	font-size: 16px;
+	font-family: 'Zen Kaku Gothic New', sans-serif;
+	font-weight: bold;
+	transition: background-color 0.3s ease;
+}
+
+.button:hover {
+	background-color: #006666;
+}

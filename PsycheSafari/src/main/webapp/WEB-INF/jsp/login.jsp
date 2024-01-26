@@ -23,7 +23,7 @@
 		<% } %>
 		
 		<!-- ログインフォーム -->
-		<form action="/PsycheSafari/LoginServlet" method="post" name="loginForm" onsubmit="return validateForm()">
+		<form action="/PsycheSafari/LoginServlet" method="post" name="loginForm">
 			<div class="form-group">
 				<label for="username" class="itemName">ユーザーネーム:</label>
 				<input type="text" name="username" id="username" value="">
@@ -33,7 +33,7 @@
 				<input type="password" name="password" id="password">
 			</div>
 			<div class="form-group">
-				<button type="submit" class="button">ログイン</button>
+				<input class="button" type="submit" name="Login" value="ログイン">
 			</div>
 		</form>
 	</div>

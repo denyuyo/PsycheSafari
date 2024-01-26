@@ -17,6 +17,7 @@ import jp.psycheexplorer.safari.bean.UserBean;
 import jp.psycheexplorer.safari.dao.PersonalityResultDao;
 import jp.psycheexplorer.safari.dao.QuestionDao;
 import jp.psycheexplorer.safari.dao.ResponseDao;
+import jp.psycheexplorer.safari.util.CommonFunction;
 import jp.psycheexplorer.safari.util.PropertyLoader;
 
 //@WebServlet("/PersonalityServlet")
@@ -78,6 +79,17 @@ public class PersonalityServlet extends HttpServlet {
 				// 全質問を取得
 				QuestionDao questionDao = new QuestionDao();
 				questions = questionDao.getAllQuestions();
+				
+				// 入力検証を行い、エラーメッセージを取得
+				String errorMessages = CommonFunction.checkRadioButtonSelection(request, questions);
+				
+				// エラーメッセージが存在する場合は、フォームページに戻る
+				if (!errorMessages.isEmpty()) {
+					request.setAttribute("errorMessages", errorMessages);
+					RequestDispatcher dispatcher = request.getRequestDispatcher(resultPage);
+					dispatcher.forward(request, response);
+					return;
+				}
 				
 				// ユーザーの回答をデータベースに保存
 				ResponseDao responseDao = new ResponseDao();
