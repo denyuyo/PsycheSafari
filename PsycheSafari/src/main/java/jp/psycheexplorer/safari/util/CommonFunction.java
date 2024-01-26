@@ -1,14 +1,14 @@
 package jp.psycheexplorer.safari.util;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import jp.psycheexplorer.safari.bean.QuestionBean;
+
 public class CommonFunction {
 	
-	// 文字列の長さが特定の長さ以下かどうかをチェックする checkLen メソッド
-	public static boolean checkLen(String text, int maxLength) {
-		// 文字列 text が存在し、かつその長さが指定された最大長 maxLength 以下である場合に true を返し、それ以外の場合に false を返す
-		return text.length() <= maxLength;
-	}
-	
-	// 文字列が空かどうかをチェックする isNotBlank メソッド
+	// 文字列が空かどうかをチェックするメソッド
 	public static boolean isBlank(String text) {
 		// 文字列 text が存在せず、空である場合に true を返し、それ以外の場合に false を返す
 		return text == null || text.isEmpty();
@@ -26,5 +26,23 @@ public class CommonFunction {
 		}
 		// 呼び出し元にエラーメッセージを表示
 		return errorMessages;
+	}
+	
+	// 全ての質問に回答があるかどうかをチェックするメソッド
+	public static String checkRadioButtonSelection(HttpServletRequest request, List<QuestionBean> questions) {
+		StringBuilder errorMessages = new StringBuilder();
+		boolean isErrorPresent = false;
+		
+		for (QuestionBean question : questions) {
+			String selectedOption = request.getParameter("answer" + question.getQuestionId());
+			if (selectedOption == null || (!selectedOption.equals("A") && !selectedOption.equals("B"))) {
+				if (isErrorPresent) {
+					errorMessages.append("<br>");
+				}
+				errorMessages.append("質問 '").append(question.getQuestionText()).append("' に回答してください。");
+				isErrorPresent = true;
+			}
+		}
+		return errorMessages.toString();
 	}
 }

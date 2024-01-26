@@ -30,8 +30,9 @@ public class PersonalityServlet extends HttpServlet {
 		
 		HttpSession session = request.getSession(false);
 		
+		// セッションを取得（存在しない場合はnullを返す）
 		if (session == null || session.getAttribute("user") == null) {
-			// セッションが存在しない、またはセッション内に user 属性が設定されていない場合は、ログインページへリダイレクト
+			// セッションが無効、またはユーザー情報がない場合、ログインページにリダイレクト
 			resultPage = PropertyLoader.getProperty("url.safari.login");
 			response.sendRedirect(resultPage);
 			return;
@@ -61,30 +62,28 @@ public class PersonalityServlet extends HttpServlet {
 		
 		String resultPage = PropertyLoader.getProperty("url.jsp.personality");
 		
-		// セッションを取得して、存在しない場合は null を返す
+		// セッションを取得（存在しない場合はnullを返す）
 		HttpSession session = request.getSession(false);
-		if (session == null || session.getAttribute("user") == null) {
-			// セッションが無効なら、ログインページへリダイレクトする
-			resultPage = PropertyLoader.getProperty("url.safari.login");
-			response.sendRedirect(resultPage);
-			return;
-		}
 		
-		// 診断項目一覧を初期化
+		// 診断項目のリストを初期化
 		List<QuestionBean> questions = null;
 		
-		if (request.getParameter("Submit") != null) {
+		 // 診断結果を見るボタンが押下された場合
+		if (request.getParameter("Result") != null) {
+			// セッションからユーザー情報を取得
 			UserBean user = (UserBean) session.getAttribute("user");
 			int userId = user.getUserId();
 			
 			try {
+				// 全質問を取得
 				QuestionDao questionDao = new QuestionDao();
 				questions = questionDao.getAllQuestions();
 				
+				// ユーザーの回答をデータベースに保存
 				ResponseDao responseDao = new ResponseDao();
 				responseDao.saveUserResponses(request, userId, questions);
 				
-				// 性格タイプを決定する処理を追加
+				// ユーザーの性格タイプを決定し、結果を保存
 				PersonalityResultDao personalityResultDao = new PersonalityResultDao();
 				String personalityType = personalityResultDao.determinePersonalityType(userId);
 				personalityResultDao.savePersonalityResult(userId, personalityType);
