@@ -1,0 +1,128 @@
+@charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Honk&family=Rubik+Glitch+Pop&display=swap');
+
+body {
+	font-family: 'Zen Kaku Gothic New', sans-serif;
+	background-color: #f4f2f0;
+	color: #333333;
+	margin: 0;
+	text-align: center;
+}
+
+header {
+	background: linear-gradient(45deg, #6a5acd, #4169e1); /* 紫と青色のグラデーション */
+	color: white;
+	text-align: center;
+	padding: 14px;
+	font-size: 34px;
+	font-family: 'Rubik Glitch Pop', system-ui;
+	font-weight: 700;
+	margin-bottom: 2.4em;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	border-radius: 4px;
+}
+
+
+h2 {
+	color: #008080;
+	margin-bottom: 30px;
+	font-size: 24px;
+}
+
+form {
+	background-color: white;
+	padding: 40px;
+	border-radius: 15px;
+	display: inline-block;
+	text-align: center;
+	border: 2px solid #F4A460;
+	/* サンディブラウン色の枠線に変更 */
+	border-radius: 15px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	width: 80%;
+	max-width: 600px;
+	/* 最大幅を設定 */
+	margin: 0 auto;
+	/* 水平中央に配置 */
+}
+
+p {
+	font-size: 18px; /* フォントサイズを少し大きく */
+	color: #444; /* 色を少し濃く */
+	margin-bottom: 20px;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: inherit;
+}
+
+html {
+	box-sizing: border-box;
+	font-size: 62.5%;
+}
+
+.btn,
+a.btn,
+button.btn {
+	font-size: 1.6rem;
+	font-weight: 700;
+	line-height: 1.5;
+	padding: 1rem 4rem;
+	cursor: pointer;
+	user-select: none;
+	transition: all 0.3s;
+	text-align: center;
+	vertical-align: middle;
+	text-decoration: none;
+	letter-spacing: 0.1em;
+	color: white;
+	border-radius: 0.5rem;
+	background-color: #7b68ee; /* やや明るい紫色に変更 */
+	border: none;
+}
+
+.btn,
+a.btn,
+button.btn {
+	font-size: 1.6rem;
+	font-weight: 700;
+	line-height: 1.5;
+	padding: 1rem 4rem;
+	cursor: pointer;
+	user-select: none;
+	transition: all 0.3s;
+	text-align: center;
+	vertical-align: middle;
+	text-decoration: none;
+	letter-spacing: 0.1em;
+	color: white;
+	border-radius: 0.5rem;
+	background: linear-gradient(to right, #ffa500, #7b68ee, #4169e1); /* オレンジ、紫、青のグラデーション */
+	border: none;
+}
+
+.btn:hover,
+a.btn:hover,
+button.btn:hover {
+	background: linear-gradient(to right, #ff4500, #6a5acd, #27408b); /* ダークオレンジ、暗い紫、暗い青のグラデーション */
+}
+
+.btn-radius-gradient-wrap {
+	display: inline-block;
+	padding: 0.5rem;
+	border-radius: 100vh;
+}
+
+.btn-radius-gradient {
+	border-radius: 100vh;
+	background: linear-gradient(to right, #ffa500, #7b68ee, #4169e1); /* オレンジ、紫、青のグラデーション */
+}
+
+.btn-radius-gradient:hover {
+	background: linear-gradient(to right, #ff4500, #6a5acd, #27408b); /* ホバー時にダークオレンジ、暗い紫、暗い青のグラデーション */
+	transform: scale(1.05);
+}

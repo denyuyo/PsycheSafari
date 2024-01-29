@@ -1,0 +1,84 @@
+@charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Honk&family=Rubik+Glitch+Pop&display=swap');
+
+body {
+	font-family: 'Zen Kaku Gothic New', sans-serif;
+	background-color: #f4f2f0;
+	color: #333333;
+	margin: 0;
+	text-align: center;
+}
+
+header {
+	background: linear-gradient(45deg, #6a5acd, #4169e1); /* 紫と青色のグラデーション */
+	color: white;
+	text-align: center;
+	padding: 14px;
+	font-size: 34px;
+	font-family: 'Rubik Glitch Pop', system-ui;
+	font-weight: 700;
+	margin-bottom: 2.4em;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	border-radius: 4px;
+}
+
+.form-container {
+	background-color: white;
+	padding: 40px;
+	border-radius: 15px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	width: 80%;
+	max-width: 600px;
+	margin: 0 auto;
+}
+
+.login-message, .itemName {
+	font-size: 18px;
+	margin-bottom: 20px;
+	color: #444;
+}
+
+.form-group, input[type="text"], input[type="password"] {
+	margin-bottom: 20px;
+}
+
+input[type="text"], input[type="password"] {
+	width: 100%;
+	padding: 12px;
+	border: 2px solid #F4A460; /* サンディブラウン色の枠線に変更 */
+	border-radius: 8px;
+	box-sizing: border-box;
+	font-size: 16px;
+}
+
+.button {
+	padding: 12px 90px;
+	font-size: 18px;
+	border-radius: 10px;
+	background: linear-gradient(to right, #ffa500, #7b68ee, #4169e1);
+	color: white;
+	border: none;
+	cursor: pointer;
+	font-weight: bold;
+	transition: all 0.3s ease, background-position 0.5s ease; /* 背景位置の変更もトランジションに含める */
+	background-size: 200% 100%; /* グラデーションのサイズを調整 */
+	background-position: left bottom;
+}
+
+.button:hover {
+	background-position: right bottom; /* ホバー時にグラデーションを右に流れるように変更 */
+	transform: scale(1.05); /* わずかに拡大 */
+}
+
+.button:active {
+	transform: scale(0.); /* クリック時にわずかに縮小 */
+}
+
+.error-messages {
+	color: #ff0000;
+	font-size: 14px;
+	text-align: center;
+	margin-bottom: 20px;
+}

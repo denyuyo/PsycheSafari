@@ -80,16 +80,18 @@ public class PersonalityServlet extends HttpServlet {
 				QuestionDao questionDao = new QuestionDao();
 				questions = questionDao.getAllQuestions();
 				
-				// フォームに入力された radio ボタンを取得
 				QuestionBean question = new QuestionBean();
 				
 				// エラーメッセージを初期化
 				String errorMessages = null;
 				
+				// radioボタンの選択を確認するループ処理
 				for (QuestionBean questionData : questions) {
 					
+					// ユーザーがフォームに入力したQuestionIdに紐づくradioボタンの値（answer）を取得
 					question.setOptionA(request.getParameter("answer" + questionData.getQuestionId()) );
 					
+					// answerが未選択の場合
 					if(request.getParameter("answer" + questionData.getQuestionId()) == null) {
 						errorMessages = "ラジオボタンが選択されていません。少なくとも1つのオプションを選択してください。";
 						
@@ -103,7 +105,7 @@ public class PersonalityServlet extends HttpServlet {
 					}
 				}
 				
-				// セッションに入力内容を保存（エラーがあっても）
+				// セッションに入力内容を保存
 				session.setAttribute("QuestionBean", question);
 				
 				// ユーザーの回答をデータベースに保存

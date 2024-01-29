@@ -16,11 +16,12 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>性格診断ゲーム</title>
-	<link rel="stylesheet" href="design/personality.css" type="text/css">
+	<link rel="stylesheet" href="design/p2.css" type="text/css">
 </head>
 <body>
-	<h2>性格診断</h2>
+	<header>PsycheSafari</header>
 	<form action="/PsycheSafari/PersonalityServlet" method="post" id="form" onsubmit="return checkAllQuestions();">
 		<% String errorMessages = (String) request.getAttribute("errorMessages");
 			if (errorMessages != null) { %>

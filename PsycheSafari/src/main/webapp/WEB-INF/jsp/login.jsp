@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" 
+	pageEncoding="UTF-8"%>
 <%
 	// キャッシュの無効化
 	response.setHeader("pragma", "no-cache");
@@ -9,11 +10,12 @@
 <html lang="ja">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>性格診断ゲーム</title>
-	<link rel="stylesheet" href="design/login.css" type="text/css">
+	<link rel="stylesheet" href="design/l1.css" type="text/css">
 </head>
 <body>
-	<header>ログイン画面</header>
+	<header>PsycheSafari</header>
 	<div class="form-container">
 		<p class="login-message">ようこそ！<br>ユーザーネームとパスワードを入力してください</p>
 	

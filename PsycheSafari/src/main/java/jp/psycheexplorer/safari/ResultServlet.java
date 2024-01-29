@@ -2,7 +2,7 @@ package jp.psycheexplorer.safari;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
@@ -65,7 +65,7 @@ public class ResultServlet extends HttpServlet {
 		try {
 			// 質問リストを取得
 			QuestionDao questionDao = new QuestionDao();
-			List<QuestionBean> questions = questionDao.getAllQuestions();
+			ArrayList<QuestionBean> questions = questionDao.getAllQuestions();
 			
 			// ユーザーの回答をデータベースに保存
 			ResponseDao responseDao = new ResponseDao();
