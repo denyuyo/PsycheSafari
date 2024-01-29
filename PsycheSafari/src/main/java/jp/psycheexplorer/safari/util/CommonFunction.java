@@ -1,6 +1,6 @@
 package jp.psycheexplorer.safari.util;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -29,7 +29,7 @@ public class CommonFunction {
 	}
 	
 	// 全ての質問に回答があるかどうかをチェックするメソッド
-	public static String checkRadioButtonSelection(HttpServletRequest request, List<QuestionBean> questions) {
+	public static String checkRadioButtonSelection(HttpServletRequest request, ArrayList<QuestionBean> questions) {
 		StringBuilder errorMessages = new StringBuilder(); // エラーメッセージを格納するStringBuilderオブジェクト
 		
 		for (QuestionBean question : questions) { // 質問リストをループ

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"
 	import="jp.psycheexplorer.safari.bean.QuestionBean"
-	import="java.util.List"
+	import="java.util.ArrayList"
 %>
 <%
 	// キャッシュの無効化
@@ -10,7 +10,7 @@
 	response.setDateHeader("Expires", 0);
 	
 	// 診断項目一覧をすべて取得
-	List<QuestionBean> questions = (List<QuestionBean>) request.getAttribute("questions");
+	ArrayList<QuestionBean> questions = (ArrayList<QuestionBean>) request.getAttribute("questions");
 %>
 <!DOCTYPE html>
 <html>
@@ -21,7 +21,7 @@
 </head>
 <body>
 	<h2>性格診断</h2>
-	<form action="/PsycheSafari/ResultServlet" method="post" id="form" onsubmit="return checkAllQuestions();">
+	<form action="/PsycheSafari/PersonalityServlet" method="post" id="form" onsubmit="return checkAllQuestions();">
 		<% String errorMessages = (String) request.getAttribute("errorMessages");
 			if (errorMessages != null) { %>
 				 <div class="error-messages" id="errorMessages"><%=errorMessages%></div>
@@ -40,6 +40,5 @@
 		<% } %>
 		<input class="btn btn-malformation btn-malformation--pastel" type="submit" name="Result" value="診断結果を見る">
 	</form>
-	<script src="design/personality.js"></script>
 </body
 </html>

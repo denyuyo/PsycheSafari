@@ -2,6 +2,7 @@ package jp.psycheexplorer.safari;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.NamingException;
@@ -17,7 +18,6 @@ import jp.psycheexplorer.safari.bean.UserBean;
 import jp.psycheexplorer.safari.dao.PersonalityResultDao;
 import jp.psycheexplorer.safari.dao.QuestionDao;
 import jp.psycheexplorer.safari.dao.ResponseDao;
-import jp.psycheexplorer.safari.util.CommonFunction;
 import jp.psycheexplorer.safari.util.PropertyLoader;
 
 //@WebServlet("/PersonalityServlet")
@@ -67,7 +67,7 @@ public class PersonalityServlet extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		
 		// 診断項目のリストを初期化
-		List<QuestionBean> questions = null;
+		ArrayList<QuestionBean> questions = null;
 		
 		 // 診断結果を見るボタンが押下された場合
 		if (request.getParameter("Result") != null) {
@@ -80,16 +80,31 @@ public class PersonalityServlet extends HttpServlet {
 				QuestionDao questionDao = new QuestionDao();
 				questions = questionDao.getAllQuestions();
 				
-				// 入力検証を行い、エラーメッセージを取得
-				String errorMessages = CommonFunction.checkRadioButtonSelection(request, questions);
+				// フォームに入力された radio ボタンを取得
+				QuestionBean question = new QuestionBean();
 				
-				// エラーメッセージが存在する場合は、フォームページに戻る
-				if (!errorMessages.isEmpty()) {
-					request.setAttribute("errorMessages", errorMessages);
-					RequestDispatcher dispatcher = request.getRequestDispatcher(resultPage);
-					dispatcher.forward(request, response);
-					return;
+				// エラーメッセージを初期化
+				String errorMessages = null;
+				
+				for (QuestionBean questionData : questions) {
+					
+					question.setOptionA(request.getParameter("answer" + questionData.getQuestionId()) );
+					
+					if(request.getParameter("answer" + questionData.getQuestionId()) == null) {
+						errorMessages = "ラジオボタンが選択されていません。少なくとも1つのオプションを選択してください。";
+						
+						// エラーメッセージをリクエスト属性にセット
+						request.setAttribute("errorMessages", errorMessages);
+						request.setAttribute("questions", questions);
+						
+						RequestDispatcher dispatcher = request.getRequestDispatcher(resultPage);
+						dispatcher.forward(request, response);
+						return;
+					}
 				}
+				
+				// セッションに入力内容を保存（エラーがあっても）
+				session.setAttribute("QuestionBean", question);
 				
 				// ユーザーの回答をデータベースに保存
 				ResponseDao responseDao = new ResponseDao();
