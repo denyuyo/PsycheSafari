@@ -28,6 +28,7 @@ public class PersonalityResultDao {
 				"SUM(CASE WHEN selected_option = 'B' THEN 1 ELSE 0 END) THEN '外向型' ELSE '内向型' END " +
 				"AS personality_type FROM responses WHERE user_id = ? GROUP BY user_id";
 		
+		
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement statement = connection.prepareStatement(sql)) {
 			statement.setInt(1, userId);

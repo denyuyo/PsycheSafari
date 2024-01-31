@@ -13,11 +13,13 @@ import jp.psycheexplorer.safari.util.DbSource;
 
 public class QuestionDao {
 	
+	// すべての質問をデータベースから取得するメソッド
 	public ArrayList<QuestionBean> getAllQuestions() throws SQLException, NamingException {
 		Connection connection = null;
 		
 		ArrayList<QuestionBean> questions = new ArrayList<QuestionBean>();
 		
+		// SQLクエリ: questionsテーブルから全ての質問を選択
 		String sql =
 			"SELECT "
 			+ 	"question_id, "
@@ -35,6 +37,7 @@ public class QuestionDao {
 			
 			ResultSet resultSet = statement.executeQuery();
 			
+			// 質問内容を生成してリストに追加
 			while (resultSet.next()) {
 				QuestionBean question = new QuestionBean();
 				question.setQuestionId(resultSet.getInt("question_id"));
@@ -45,7 +48,7 @@ public class QuestionDao {
 			}
 			statement.close();
 		}catch (Exception e) {
-			// 例外がある場合は投げる
+			// 例外が発生した場合は処理を投げる
 			e.printStackTrace();
 			throw e;
 		} finally {
@@ -53,7 +56,7 @@ public class QuestionDao {
 				connection.close();
 			}
 		}
-		// 最後に呼び出し元に返す
+		// 質問リストを呼び出し元に返す
 		return questions;
 	}
 }

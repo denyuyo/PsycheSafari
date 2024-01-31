@@ -98,7 +98,12 @@ request.setCharacterEncoding("UTF-8");
 			session.setAttribute("user", user);
 				
 		} catch (Exception e) {
-			e.printStackTrace();
+			errorMessages = "エラーが発生しました。";
+			// もし例外が発生した場合は、エラーページに転送します
+			request.setAttribute("errorMessage", errorMessages);
+			resultPage = PropertyLoader.getProperty("url.jsp.error");
+			request.getRequestDispatcher(resultPage).forward(request, response);
+			return;
 		}
 		// 問題がなくログインに成功した場合、診断画面に遷移
 		resultPage = PropertyLoader.getProperty("url.safari.personality");

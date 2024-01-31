@@ -22,7 +22,7 @@
 </head>
 <body>
 	<header>PsycheSafari</header>
-	<form action="/PsycheSafari/PersonalityServlet" method="post" id="form" onsubmit="return checkAllQuestions();">
+	<form action="/PsycheSafari/PersonalityServlet" method="post" id="form">
 		<% String errorMessages = (String) request.getAttribute("errorMessages");
 			if (errorMessages != null) { %>
 				 <div class="error-messages" id="errorMessages"><%=errorMessages%></div>

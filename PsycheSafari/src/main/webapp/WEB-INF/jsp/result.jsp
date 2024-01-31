@@ -32,6 +32,5 @@
 			</form>
 		</div>
 	</div>
-	<script src="design/result.js"></script>
 </body>
 </html>

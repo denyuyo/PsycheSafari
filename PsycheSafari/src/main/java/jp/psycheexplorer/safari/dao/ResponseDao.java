@@ -3,7 +3,7 @@ package jp.psycheexplorer.safari.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +13,7 @@ import jp.psycheexplorer.safari.util.DbSource;
 
 public class ResponseDao {
 	
-	public void saveUserResponses(HttpServletRequest request, int userId, List<QuestionBean> questions) throws SQLException, NamingException {
+	public void saveUserResponses(HttpServletRequest request, int userId, ArrayList<QuestionBean> questions) throws SQLException, NamingException {
 		Connection connection = null;
 		
 		// SQLクエリ: ユーザーの回答を responses テーブルに保存
@@ -22,6 +22,7 @@ public class ResponseDao {
 		try {
 			// データベース接続を確立
 			connection = DbSource.getDateSource().getConnection();
+			
 			// SQLクエリをセットして、実行する
 			PreparedStatement statement = connection.prepareStatement(insertSql);
 			
@@ -33,14 +34,15 @@ public class ResponseDao {
 					statement = connection.prepareStatement(insertSql);
 					// PreparedStatement に値をセット
 					statement.setInt(1, question.getQuestionId()); // 質問ID
-					statement.setString(2, selectedOption); // 選択されたオプション (A or B)
-					statement.setInt(3, userId); // ユーザーID
+					statement.setString(2, selectedOption);        // 選択されたオプション (A or B)
+					statement.setInt(3, userId);                   // ユーザーID
+					
 					// SQLクエリを実行して回答を保存
 					statement.executeUpdate();
 				}
 			}
 		} catch (Exception e) {
-			// 例外がある場合は投げる
+			// 例外が発生した場合は処理を投げる
 			e.printStackTrace();
 			throw e;
 		} finally {
@@ -48,5 +50,5 @@ public class ResponseDao {
 				connection.close();
 			}
 		}
-    }
+	}
 }

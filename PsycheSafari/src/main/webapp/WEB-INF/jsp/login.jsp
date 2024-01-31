@@ -39,6 +39,5 @@
 			</div>
 		</form>
 	</div>
-	<script src="design/login.js"></script>
 </body>
 </html>

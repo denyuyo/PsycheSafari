@@ -3,7 +3,6 @@ package jp.psycheexplorer.safari;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
@@ -27,7 +26,10 @@ public class PersonalityServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		String resultPage = PropertyLoader.getProperty("url.jsp.personality");
+		
+		String errorMessages = "";
 		
 		HttpSession session = request.getSession(false);
 		
@@ -40,13 +42,19 @@ public class PersonalityServlet extends HttpServlet {
 		}
 		
 		try {
+			// 質問データをデータベースから取得
 			QuestionDao questionDao = new QuestionDao();
-			List<QuestionBean> questions = questionDao.getAllQuestions();
+			ArrayList<QuestionBean> questions = questionDao.getAllQuestions();
 			
+			// 質問データをリクエスト属性に設定
 			request.setAttribute("questions", questions);
 		} catch (SQLException | NamingException e) {
-			e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			errorMessages = "エラーが発生しました。";
+			// もし例外が発生した場合は、エラーページに転送します
+			request.setAttribute("errorMessage", errorMessages);
+			resultPage = PropertyLoader.getProperty("url.jsp.error");
+			request.getRequestDispatcher(resultPage).forward(request, response);
+			return;
 		}
 		
 		// 診断画面に転送
@@ -63,11 +71,16 @@ public class PersonalityServlet extends HttpServlet {
 		
 		String resultPage = PropertyLoader.getProperty("url.jsp.personality");
 		
+		String errorMessages = "";
+		
 		// セッションを取得（存在しない場合はnullを返す）
 		HttpSession session = request.getSession(false);
 		
 		// 診断項目のリストを初期化
 		ArrayList<QuestionBean> questions = null;
+		
+		int countA = 0;
+		
 		
 		 // 診断結果を見るボタンが押下された場合
 		if (request.getParameter("Result") != null) {
@@ -81,10 +94,7 @@ public class PersonalityServlet extends HttpServlet {
 				questions = questionDao.getAllQuestions();
 				
 				QuestionBean question = new QuestionBean();
-				
-				// エラーメッセージを初期化
-				String errorMessages = null;
-				
+								
 				// radioボタンの選択を確認するループ処理
 				for (QuestionBean questionData : questions) {
 					
@@ -103,6 +113,10 @@ public class PersonalityServlet extends HttpServlet {
 						dispatcher.forward(request, response);
 						return;
 					}
+					
+					if(request.getParameter("answer" + questionData.getQuestionId()).equals("A")) {
+						countA += 1;
+					}
 				}
 				
 				// セッションに入力内容を保存
@@ -112,17 +126,27 @@ public class PersonalityServlet extends HttpServlet {
 				ResponseDao responseDao = new ResponseDao();
 				responseDao.saveUserResponses(request, userId, questions);
 				
+				// 結果の判定
+				String personalityType = "内向型";
+				if(countA >= 3) {
+					personalityType = "外向型";
+				}
+				
 				// ユーザーの性格タイプを決定し、結果を保存
 				PersonalityResultDao personalityResultDao = new PersonalityResultDao();
-				String personalityType = personalityResultDao.determinePersonalityType(userId);
 				personalityResultDao.savePersonalityResult(userId, personalityType);
 				
 				// 性格タイプをセッションに保存
 				session.setAttribute("personalityType", personalityType);
+				
+				// 処理が正常に完了したらセッションにフラグを設定
+			    session.setAttribute("personalityCompleted", Boolean.TRUE);
 			} catch (SQLException | NamingException e) {
-				e.printStackTrace();
-				// 内部エラーをクライアントに通知
-				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				errorMessages = "エラーが発生しました。";
+				// もし例外が発生した場合は、エラーページに転送します
+				request.setAttribute("errorMessage", errorMessages);
+				resultPage = PropertyLoader.getProperty("url.jsp.error");
+				request.getRequestDispatcher(resultPage).forward(request, response);
 				return;
 			}
 			resultPage = PropertyLoader.getProperty("url.safari.result");
