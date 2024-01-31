@@ -39,6 +39,17 @@ public class ResultServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String resultPage = PropertyLoader.getProperty("url.jsp.result");
+		
+		HttpSession session = request.getSession(false);
+		
+		// セッションを取得（存在しない場合はnullを返す）
+		if (session == null || session.getAttribute("user") == null) {
+			// セッションが無効、またはユーザー情報がない場合、ログインページにリダイレクト
+			resultPage = PropertyLoader.getProperty("url.safari.login");
+			response.sendRedirect(resultPage);
+			return;
+		}
+		// 結果画面に転送
 		RequestDispatcher dispatcher = request.getRequestDispatcher(resultPage);
 		dispatcher.forward(request, response);
 	}

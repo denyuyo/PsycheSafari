@@ -38,7 +38,7 @@ public class LoginServlet extends HttpServlet {
 		// セッションを取得し、存在しない場合は null を返す
 		HttpSession session = request.getSession(false);
 		
-		// セッションが存在し、かつ "account" という属性がセッションに存在する場合（ユーザーログ済み）、診断画面へリダイレクト
+		// セッションが存在し、かつ "user" という属性がセッションに存在する場合（ユーザーログ済み）、診断画面へリダイレクト
 		if (session != null && session.getAttribute("user") != null) {
 			response.sendRedirect(resultPage);
 			return;
@@ -94,6 +94,7 @@ request.setCharacterEncoding("UTF-8");
 			// セッションを取得または新しいセッションを作成して、ログインできるようにする
 			HttpSession session = request.getSession(true);
 			
+			// sessionにuserを関連付けて、どのユーザーがログインしているか識別
 			session.setAttribute("user", user);
 				
 		} catch (Exception e) {

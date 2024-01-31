@@ -49,7 +49,7 @@ public class PersonalityServlet extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 		
-		// ログイン済みを確認されたので、診断画面に転送
+		// 診断画面に転送
 		RequestDispatcher dispatcher = request.getRequestDispatcher(resultPage);
 		dispatcher.forward(request, response);
 	}

@@ -31,9 +31,4 @@ public class QuestionBean {
 	public void setOptionB(String optionB) {
 		this.optionB = optionB;
 	}
-	
-	// optionA または optionB のどちらかが null でない場合に true を返すメソッド
-    public boolean isAnyOptionSelected() {
-        return optionA != null || optionB != null;
-    }
 }
